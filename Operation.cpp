@@ -177,22 +177,22 @@ void OperationList::loadFromPath(const Path &path, bool useDiagonalPath)
 		opList = tmp_opList;
 	}
 
-	// tmp_opList = opList;
-	// opList.clear();
+	tmp_opList = opList;
+	opList.clear();
 
 	// FORWARDの圧縮
-	// opList.push_back(tmp_opList[0]);
-	// for (size_t i = 1; i < tmp_opList.size(); i++)
-	// {
-	// 	if (tmp_opList[i].op == Operation::FORWARD && tmp_opList[i].op == opList.back().op)
-	// 	{
-	// 		opList.back().n++;
-	// 	}
-	// 	else
-	// 	{
-	// 		opList.push_back(tmp_opList[i]);
-	// 	}
-	// }
+	opList.push_back(tmp_opList[1]); // 先頭のFORWARDであるtmp_opList[0]は予め用意してあるので飛ばす
+	for (size_t i = 2; i < tmp_opList.size(); i++)
+	{
+		if (tmp_opList[i].op == Operation::FORWARD && tmp_opList[i].op == opList.back().op)
+		{
+			opList.back().n++;
+		}
+		else
+		{
+			opList.push_back(tmp_opList[i]);
+		}
+	}
 }
 
 void OperationList::print()
