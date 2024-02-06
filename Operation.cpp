@@ -182,7 +182,7 @@ void OperationList::loadFromPath(const Path &path, bool useDiagonalPath)
 
 	// FORWARDの圧縮
 	opList.push_back(tmp_opList[1]); // 先頭のFORWARDであるtmp_opList[0]は予め用意してあるので飛ばす
-	for (size_t i = 2; i < tmp_opList.size(); i++)
+	for (size_t i = 1; i < tmp_opList.size(); i++)
 	{
 		if (tmp_opList[i].op == Operation::FORWARD && tmp_opList[i].op == opList.back().op)
 		{
