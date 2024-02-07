@@ -1,3 +1,8 @@
+/**
+ * @file MazeSolver_conf.h
+ * @author idt12312
+ */
+
 #ifndef MAZESOLVER_CONF_H_
 #define MAZESOLVER_CONF_H_
 
@@ -5,14 +10,18 @@
  * 迷路に関するパラメータ
  ***************************************/
 // 迷路の大きさ
-#define MAZE_SIZE 16
+// #define MAZE_SIZE 16
+#define MAZE_SIZE 4
 
 // 迷路のゴール座標
 // ゴールとしたい座標を並べる
 //  4個でなくてもよい
-#define MAZE_GOAL_LIST                                                 \
-    {                                                                  \
-        IndexVec(7, 7), IndexVec(7, 8), IndexVec(8, 7), IndexVec(8, 8) \
+// IndexVec(7, 7), IndexVec(7, 8), IndexVec(8, 7), IndexVec(8, 8)
+// IndexVec(3, 3)
+
+#define MAZE_GOAL_LIST \
+    {                  \
+        IndexVec(3, 3) \
     }
 
 /****************************************
@@ -43,6 +52,6 @@
 #define MIN_VELOCITY 0.5
 
 // 1区画の長さ[m]
-#define MAZE_1BLOCK_LENGTH 0.18
+#define MAZE_1BLOCK_LENGTH 180.0
 
 #endif /* MAZESOLVER_CONF_H_ */

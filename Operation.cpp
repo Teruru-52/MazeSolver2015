@@ -1,3 +1,8 @@
+/**
+ * @file Orientation.cpp
+ * @author idt12312
+ */
+
 #include <cmath>
 #include <cstdio>
 #include "Operation.h"

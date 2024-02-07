@@ -1,3 +1,8 @@
+/**
+ * @file Agent.cpp
+ * @author idt12312
+ */
+
 #include <algorithm>
 
 #include "MazeSolver_conf.h"
@@ -33,7 +38,7 @@ Direction Agent::calcNextDirection(const IndexVec &cur, const IndexVec &_dist)
 			if (!cur_wall[i] && maze->getStepMap(neighbor) < curStep)
 			{
 				// 北優先
-				//  return Direction(NORTH << i);
+				// return Direction(NORTH << i);
 				// 未探索の壁優先
 				if (nFoundWall > maze->getWall(neighbor).nDoneWall())
 				{
@@ -54,7 +59,7 @@ Direction Agent::calcNextDirection(const IndexVec &cur, const IndexVec &_dist)
 			if (!cur_wall[i] && maze->getStepMap(neighbor) == curStep)
 			{
 				// 北優先
-				//  return Direction(NORTH << i);
+				// return Direction(NORTH << i);
 				// 未探索壁優先
 				if (nFoundWall > maze->getWall(neighbor).nDoneWall())
 				{

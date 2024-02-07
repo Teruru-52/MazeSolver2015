@@ -1,3 +1,8 @@
+/**
+ * @file Maze.h
+ * @author idt12312
+ */
+
 #ifndef MAZE_H_
 #define MAZE_H_
 

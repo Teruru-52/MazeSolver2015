@@ -1,3 +1,8 @@
+/**
+ * @file Maze.cpp
+ * @author idt12312
+ */
+
 #include <cstdio>
 #include <queue>
 
@@ -12,22 +17,25 @@ const uint8_t DONE_EAST = 0x20;
 const uint8_t DONE_SOUTH = 0x40;
 const uint8_t DONE_WEST = 0x80;
 
-const IndexVec IndexVec::vecNorth(0,1);
-const IndexVec IndexVec::vecEast(1,0);
-const IndexVec IndexVec::vecSouth(0,-1);
-const IndexVec IndexVec::vecWest(-1,0);
+const IndexVec IndexVec::vecNorth(0, 1);
+const IndexVec IndexVec::vecEast(1, 0);
+const IndexVec IndexVec::vecSouth(0, -1);
+const IndexVec IndexVec::vecWest(-1, 0);
 const IndexVec IndexVec::vecDir[4] = {IndexVec::vecNorth, IndexVec::vecEast, IndexVec::vecSouth, IndexVec::vecWest};
 
 void Maze::clear()
 {
-	for (int i=0;i<MAZE_SIZE;i++) {
-		for (int j=0;j<MAZE_SIZE;j++) {
+	for (int i = 0; i < MAZE_SIZE; i++)
+	{
+		for (int j = 0; j < MAZE_SIZE; j++)
+		{
 			wall[i][j] = 0;
 		}
 	}
-	for (int i=0;i<MAZE_SIZE;i++) {
-		wall[MAZE_SIZE-1][i] |= NORTH | DONE_NORTH;
-		wall[i][MAZE_SIZE-1] |= EAST | DONE_EAST;
+	for (int i = 0; i < MAZE_SIZE; i++)
+	{
+		wall[MAZE_SIZE - 1][i] |= NORTH | DONE_NORTH;
+		wall[i][MAZE_SIZE - 1] |= EAST | DONE_EAST;
 		wall[0][i] |= SOUTH | DONE_SOUTH;
 		wall[i][0] |= WEST | DONE_WEST;
 	}
@@ -41,14 +49,17 @@ bool Maze::loadFromFile(const char *_filename)
 
 	FILE *inputFile;
 	inputFile = std::fopen(_filename, "r");
-	if (inputFile == NULL) {
+	if (inputFile == NULL)
+	{
 		std::printf("ERROR : Failed open wall data file\n");
 		return false;
 	}
 
-	for (int i=0;i<3;i++) {
+	for (int i = 0; i < 3; i++)
+	{
 		int dummy;
-		if (std::fscanf(inputFile, "%d", &dummy) == EOF) {
+		if (std::fscanf(inputFile, "%d", &dummy) == EOF)
+		{
 			std::printf("ERROR : Failed read wall data\n");
 			std::fclose(inputFile);
 			return false;
@@ -57,14 +68,18 @@ bool Maze::loadFromFile(const char *_filename)
 
 	size_t cnt = 0;
 	char ch;
-	while (std::fscanf(inputFile, "%c", &ch) != EOF) {
-		if ( ('0' <= ch && ch <= '9') || ('a' <= ch && ch <= 'f')) {
+	while (std::fscanf(inputFile, "%c", &ch) != EOF)
+	{
+		if (('0' <= ch && ch <= '9') || ('a' <= ch && ch <= 'f'))
+		{
 			uint8_t wall_bin;
-			if ('0' <= ch && ch <= '9') wall_bin = ch - '0';
-			else wall_bin = ch - 'a' + 10;
+			if ('0' <= ch && ch <= '9')
+				wall_bin = ch - '0';
+			else
+				wall_bin = ch - 'a' + 10;
 
-			size_t y = MAZE_SIZE -1 -cnt/MAZE_SIZE;
-			size_t x = cnt%MAZE_SIZE;
+			size_t y = MAZE_SIZE - 1 - cnt / MAZE_SIZE;
+			size_t x = cnt % MAZE_SIZE;
 			wall[y][x].byte = wall_bin | 0xf0;
 			cnt++;
 		}
@@ -74,18 +89,22 @@ bool Maze::loadFromFile(const char *_filename)
 	return true;
 }
 
-
-void Maze::loadFromArray(const char asciiData[MAZE_SIZE+1][MAZE_SIZE+1])
+void Maze::loadFromArray(const char asciiData[MAZE_SIZE + 1][MAZE_SIZE + 1])
 {
 	dirty = true;
 
-	for (int i=0;i<MAZE_SIZE;i++) {
-		for (int j=0;j<MAZE_SIZE;j++) {
-			char ch = asciiData[MAZE_SIZE-1-i][j];
-			if ( ('0' <= ch && ch <= '9') || ('a' <= ch && ch <= 'f')) {
+	for (int i = 0; i < MAZE_SIZE; i++)
+	{
+		for (int j = 0; j < MAZE_SIZE; j++)
+		{
+			char ch = asciiData[MAZE_SIZE - 1 - i][j];
+			if (('0' <= ch && ch <= '9') || ('a' <= ch && ch <= 'f'))
+			{
 				uint8_t wall_bin;
-				if ('0' <= ch && ch <= '9') wall_bin = ch - '0';
-				else wall_bin = ch - 'a' + 10;
+				if ('0' <= ch && ch <= '9')
+					wall_bin = ch - '0';
+				else
+					wall_bin = ch - 'a' + 10;
 
 				wall[i][j].byte = wall_bin | 0xf0;
 			}
@@ -96,59 +115,81 @@ void Maze::loadFromArray(const char asciiData[MAZE_SIZE+1][MAZE_SIZE+1])
 void Maze::printWall(const uint8_t value[MAZE_SIZE][MAZE_SIZE]) const
 {
 	bool printValueOn = false;
-	if (value) printValueOn = true;
+	if (value)
+		printValueOn = true;
 
-	for (int y=MAZE_SIZE-1;y>=0;y--) {
-		for (int x=0;x<MAZE_SIZE;x++) {
+	for (int y = MAZE_SIZE - 1; y >= 0; y--)
+	{
+		for (int x = 0; x < MAZE_SIZE; x++)
+		{
 			std::printf("+");
-			if(wall[y][x].bits.North) std::printf("----");
-			else std::printf("    ");
+			if (wall[y][x].bits.North)
+				std::printf("----");
+			else
+				std::printf("    ");
 		}
 		std::printf("+\n");
 
-		for (int x=0;x<MAZE_SIZE;x++) {
-			if (wall[y][x].bits.West) std::printf("|");
-			else std::printf(" ");
+		for (int x = 0; x < MAZE_SIZE; x++)
+		{
+			if (wall[y][x].bits.West)
+				std::printf("|");
+			else
+				std::printf(" ");
 			std::printf(" ");
-			if (printValueOn) std::printf("%3u", value[y][x]);
-			else std::printf("   ");
+			if (printValueOn)
+				std::printf("%3u", value[y][x]);
+			else
+				std::printf("   ");
 		}
 		std::printf("|\n");
 	}
-	for (int i=0;i<MAZE_SIZE;i++) {
+	for (int i = 0; i < MAZE_SIZE; i++)
+	{
 		std::printf("-----");
 	}
 	std::printf("+\n");
 }
 
-
-
 void Maze::printWall(const bool value[MAZE_SIZE][MAZE_SIZE]) const
 {
 	bool printValueOn = false;
-	if (value) printValueOn = true;
+	if (value)
+		printValueOn = true;
 
-	for (int y=MAZE_SIZE-1;y>=0;y--) {
-		for (int x=0;x<MAZE_SIZE;x++) {
+	for (int y = MAZE_SIZE - 1; y >= 0; y--)
+	{
+		for (int x = 0; x < MAZE_SIZE; x++)
+		{
 			std::printf("+");
-			if(wall[y][x].bits.North) std::printf("----");
-			else std::printf("    ");
+			if (wall[y][x].bits.North)
+				std::printf("----");
+			else
+				std::printf("    ");
 		}
 		std::printf("+\n");
 
-		for (int x=0;x<MAZE_SIZE;x++) {
-			if (wall[y][x].bits.West) std::printf("|");
-			else std::printf(" ");
+		for (int x = 0; x < MAZE_SIZE; x++)
+		{
+			if (wall[y][x].bits.West)
+				std::printf("|");
+			else
+				std::printf(" ");
 			std::printf("  ");
-			if (printValueOn){
-				if (value[y][x]) std::printf("* ");
-				else std::printf("  ");
+			if (printValueOn)
+			{
+				if (value[y][x])
+					std::printf("* ");
+				else
+					std::printf("  ");
 			}
-			else std::printf("   ");
+			else
+				std::printf("   ");
 		}
 		std::printf("|\n");
 	}
-	for (int i=0;i<MAZE_SIZE;i++) {
+	for (int i = 0; i < MAZE_SIZE; i++)
+	{
 		std::printf("-----");
 	}
 	std::printf("+\n");
@@ -159,38 +200,48 @@ void Maze::printStepMap() const
 	printWall(stepMap);
 }
 
-void Maze::updateWall(const IndexVec &cur, const Direction& newState, bool forceSetDone)
+void Maze::updateWall(const IndexVec &cur, const Direction &newState, bool forceSetDone)
 {
-	//二重書き込みを防ぐ
-	if (!forceSetDone && wall[cur.y][cur.x].isDoneAll()) return;
+	// 二重書き込みを防ぐ
+	if (!forceSetDone && wall[cur.y][cur.x].isDoneAll())
+		return;
 
 	dirty = true;
-	if (forceSetDone) wall[cur.y][cur.x] |= newState | (uint8_t)0xf0;
-	else wall[cur.y][cur.x] |= newState;
+	if (forceSetDone)
+		wall[cur.y][cur.x] |= newState | (uint8_t)0xf0;
+	else
+		wall[cur.y][cur.x] |= newState;
 
-	//今のEASTをx+1のWESTに反映
-	//今のNORTHをy+1のSOUTHに反映
-	//今のWESTをx-1のEASTに反映
-	//今のSOUTHをy-1のNORTHに反映
-	for (int i=0;i<4;i++) {
-		if (cur.canSum(IndexVec::vecDir[i])) {
+	// 今のEASTをx+1のWESTに反映
+	// 今のNORTHをy+1のSOUTHに反映
+	// 今のWESTをx-1のEASTに反映
+	// 今のSOUTHをy-1のNORTHに反映
+	for (int i = 0; i < 4; i++)
+	{
+		if (cur.canSum(IndexVec::vecDir[i]))
+		{
 			IndexVec neighbor(cur + IndexVec::vecDir[i]);
-			//今のi番目の壁情報ビットとDoneビットを(i+2)%4番目(180度回転方向)に反映
-			if (forceSetDone) wall[neighbor.y][neighbor.x] |= (0x10 | newState[i]) << (i+2)%4;
-			else wall[neighbor.y][neighbor.x] |= ((newState[i+4]<<4) | newState[i]) << (i+2)%4;
+			// 今のi番目の壁情報ビットとDoneビットを(i+2)%4番目(180度回転方向)に反映
+			if (forceSetDone)
+				wall[neighbor.y][neighbor.x] |= (0x10 | newState[i]) << (i + 2) % 4;
+			else
+				wall[neighbor.y][neighbor.x] |= ((newState[i + 4] << 4) | newState[i]) << (i + 2) % 4;
 		}
 	}
 }
 
 void Maze::updateStepMap(const IndexVec &dist, bool onlyUseFoundWall)
 {
-	if (!dirty && dist == lastStepMapDist && onlyUseFoundWall == lastOnlyUseFoundWall) return;
+	if (!dirty && dist == lastStepMapDist && onlyUseFoundWall == lastOnlyUseFoundWall)
+		return;
 	lastStepMapDist = dist;
 	lastOnlyUseFoundWall = onlyUseFoundWall;
 	dirty = false;
 
-	for(size_t i=0;i<MAZE_SIZE;i++) {
-		for(size_t j=0;j<MAZE_SIZE;j++) {
+	for (size_t i = 0; i < MAZE_SIZE; i++)
+	{
+		for (size_t j = 0; j < MAZE_SIZE; j++)
+		{
 			stepMap[i][j] = 0xff;
 		}
 	}
@@ -199,22 +250,27 @@ void Maze::updateStepMap(const IndexVec &dist, bool onlyUseFoundWall)
 	std::queue<IndexVec> q;
 	q.push(dist);
 
-	while (!q.empty()) {
+	while (!q.empty())
+	{
 		const IndexVec cur = q.front();
 		q.pop();
 
 		Direction cur_wall = wall[cur.y][cur.x];
-		for (int i=0;i<4;i++) {
+		for (int i = 0; i < 4; i++)
+		{
 			const IndexVec scanIndex = cur + IndexVec::vecDir[i];
 			const uint8_t curStep = stepMap[cur.y][cur.x];
-			if (!cur_wall[i] && stepMap[scanIndex.y][scanIndex.x] > curStep +1) {
-				//未探索壁をどうするか
-				if (onlyUseFoundWall && !cur_wall[i+4]) continue;
+			if (!cur_wall[i] && stepMap[scanIndex.y][scanIndex.x] > curStep + 1)
+			{
+				// 未探索壁をどうするか
+				if (onlyUseFoundWall && !cur_wall[i + 4])
+					continue;
 
-				stepMap[scanIndex.y][scanIndex.x] = curStep +1;
+				stepMap[scanIndex.y][scanIndex.x] = curStep + 1;
 
-				//袋小路でない場合はqueueに入れる
-				if (wall[scanIndex.y][scanIndex.x].nWall() != 3) {
+				// 袋小路でない場合はqueueに入れる
+				if (wall[scanIndex.y][scanIndex.x].nWall() != 3)
+				{
 					q.push(scanIndex);
 				}
 			}
