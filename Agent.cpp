@@ -208,7 +208,7 @@ void Agent::caclRunSequence(bool useDiagonalPath)
 	// path.printOperation();
 }
 
-void Agent::resumeAt(State resumeState, Maze &_maze)
+void Agent::resumeAt(State resumeState, Maze &_maze, const IndexVec &cur)
 {
 	reset();
 	*maze = _maze;
@@ -229,8 +229,8 @@ void Agent::resumeAt(State resumeState, Maze &_maze)
 	{
 		// 暫定最短経路上の未探索壁のある座標を列挙
 		// それらの座標をdistIndexListにいれる
-		maze->updateStepMap(IndexVec(0, 0));
-		path.calcKShortestDistancePath(IndexVec(0, 0), MAZE_GOAL_LIST, SEARCH_DEPTH1, false);
+		maze->updateStepMap(cur);
+		path.calcKShortestDistancePath(cur, MAZE_GOAL_LIST, SEARCH_DEPTH1, false);
 		path.calcNeedToSearchWallIndex();
 		distIndexList.assign(path.getNeedToSearchIndex().begin(), path.getNeedToSearchIndex().end());
 
@@ -239,7 +239,7 @@ void Agent::resumeAt(State resumeState, Maze &_maze)
 		std::list<IndexVec>::iterator it_nearestDist;
 		for (auto it = distIndexList.begin(); it != distIndexList.end(); it++)
 		{
-			int stepDiff = maze->getStepMap(IndexVec(0, 0)) - maze->getStepMap(*it);
+			int stepDiff = maze->getStepMap(cur) - maze->getStepMap(*it);
 			if (stepDiff < 0)
 				stepDiff = -stepDiff;
 			if (stepDiff < minDistance)

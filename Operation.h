@@ -23,6 +23,7 @@ struct Operation
 {
 	typedef enum
 	{
+		START,
 		FORWARD,
 		FORWARD_DIAG,
 		TURN_RIGHT180,

@@ -104,7 +104,7 @@ public:
 
 	// 途中から再開する
 	// 再開したいAgentと迷路の状態を渡す
-	void resumeAt(State resumeState, Maze &_maze);
+	void resumeAt(State resumeState, Maze &_maze, const IndexVec &cur = IndexVec(0, 0));
 };
 
 #endif /* AGENT_H_ */

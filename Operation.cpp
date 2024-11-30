@@ -186,24 +186,24 @@ void OperationList::loadFromPath(const Path &path, bool useDiagonalPath)
 	opList.clear();
 
 	// FORWARDの圧縮
+	opList.push_back(Operation::START);
 	opList.push_back(tmp_opList[1]); // 先頭のFORWARDであるtmp_opList[0]は予め用意してあるので飛ばす
-	for (size_t i = 1; i < tmp_opList.size(); i++)
+	for (size_t i = 2; i < tmp_opList.size() - 1; i++)
 	{
 		if (tmp_opList[i].op == Operation::FORWARD && tmp_opList[i].op == opList.back().op)
-		{
 			opList.back().n++;
-		}
 		else
-		{
 			opList.push_back(tmp_opList[i]);
-		}
 	}
+	// opList.push_back(Operation::STOP);
 }
 
 void OperationList::print()
 {
 	for (auto operation : opList)
 	{
+		if (operation.op == Operation::START)
+			printf("START");
 		if (operation.op == Operation::FORWARD)
 			printf("F");
 		if (operation.op == Operation::TURN_LEFT90)
@@ -216,6 +216,8 @@ void OperationList::print()
 			printf("l");
 		if (operation.op == Operation::FORWARD_DIAG)
 			printf("D");
+		if (operation.op == Operation::STOP)
+			printf("STOP");
 		printf("%d ", operation.n);
 	}
 	printf("\n");
