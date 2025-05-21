@@ -57,6 +57,9 @@ private:
 	// 上のpathの何番目
 	size_t toDistinationPath_cnt;
 
+	// 北優先度
+	bool north_priority_ = false;
+
 	// 足立法で次に進むべき方向を算出してくれる
 	Direction calcNextDirection(const IndexVec &cur, const IndexVec &dist);
 
@@ -70,6 +73,9 @@ public:
 	// cur:今の座標
 	// cur_wall:今の座標における壁情報(Done bitは無視される)
 	void update(const IndexVec &cur, const Direction &cur_wall);
+
+	// 北優先度を設定する
+	void setNorthPriority(bool north_priority) { north_priority_ = north_priority; }
 
 	// 現在の状態を返す
 	// updateを呼び出したあとは必ずこれを読んで状態を確認する

@@ -37,13 +37,15 @@ Direction Agent::calcNextDirection(const IndexVec &cur, const IndexVec &_dist)
 			IndexVec neighbor(cur + IndexVec::vecDir[i]);
 			if (!cur_wall[i] && maze->getStepMap(neighbor) < curStep)
 			{
-				// 北優先
-				// return Direction(NORTH << i);
-				// 未探索の壁優先
-				if (nFoundWall > maze->getWall(neighbor).nDoneWall())
+				if (north_priority_) // 北優先
+					return Direction(NORTH << i);
+				else // 未探索の壁優先
 				{
-					nFoundWall = maze->getWall(neighbor).nDoneWall();
-					result = Direction(NORTH << i);
+					if (nFoundWall > maze->getWall(neighbor).nDoneWall())
+					{
+						nFoundWall = maze->getWall(neighbor).nDoneWall();
+						result = Direction(NORTH << i);
+					}
 				}
 			}
 		}
