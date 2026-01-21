@@ -18,8 +18,10 @@
 // IndexVec(7, 7), IndexVec(7, 8), IndexVec(8, 7), IndexVec(8, 8)
 // IndexVec(3, 3)
 // IndexVec(8, 6)
+// IndexVec(8, 0)
 
-#define MAZE_GOAL_LIST {IndexVec(8, 0)}
+#define MAZE_GOAL_LIST \
+  {IndexVec(7, 7), IndexVec(7, 8), IndexVec(8, 7), IndexVec(8, 8)}
 
 /****************************************
  * 探索アルゴリズムに関するパラメータ

@@ -17,9 +17,9 @@ float OperationList::eval() const {
       //  float distance;
       //  if (operation.op == Operation::FORWARD_DIAG)
       //  	distance = (float)operation.n * MAZE_1BLOCK_LENGTH / 2.0 *
-      //  M_SQRT2; else 	distance = (float)operation.n * MAZE_1BLOCK_LENGTH;
-      //  const float accelDistance = (MAX_VELOCITY * MAX_VELOCITY -
-      //  MIN_VELOCITY * MIN_VELOCITY) / (2 * ACCELERATION);
+      //  M_SQRT2; else 	distance = (float)operation.n *
+      //  MAZE_1BLOCK_LENGTH; const float accelDistance = (MAX_VELOCITY *
+      //  MAX_VELOCITY - MIN_VELOCITY * MIN_VELOCITY) / (2 * ACCELERATION);
 
       // if (distance > 2 * accelDistance)
       // {
